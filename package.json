@@ -1,6 +1,6 @@
 {
   "name": "yellow-tea-panda",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Movie and Series Database",
   "main": "index.js",
   "scripts": {

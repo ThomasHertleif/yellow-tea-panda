@@ -10,7 +10,7 @@ app.set('view engine', 'hbs'); // HTML templating
 // Answer HTTP stuff
 
 app.get('/', function start_page (req, res) {
-    db.all('SELECT name, language FROM movies_with_language')
+    db.all('SELECT id, name, language FROM movies_with_language')
     .then(function (movies) {
         // movies = [{name: "Ali G", language: 'en'}]
         res.render('index', {

@@ -14,7 +14,9 @@
         <ul>
             {{#each movies}}
             <li>
-                {{this.name}} ({{this.language}})
+                <a href="/movie/{{this.id}}">
+                    {{this.name}} ({{this.language}})
+                </a>
             </li>
             {{/each}}
         </ul>
