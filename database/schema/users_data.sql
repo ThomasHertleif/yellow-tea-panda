@@ -1,0 +1,50 @@
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  mail TEXT NOT NULL,
+  password_hash TEXT NOT NULL,
+
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER IF NOT EXISTS users_updated_at_trigger
+  BEFORE UPDATE ON users BEGIN
+    UPDATE users SET updated_at = CURRENT_TIMESTAMP;
+  END;
+
+
+CREATE TABLE IF NOT EXISTS watched_episodes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  episode_id INTEGER,
+
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  
+  FOREIGN KEY (user_id) REFERENCES users (id),
+  FOREIGN KEY (episode_id) REFERENCES episodes (id)
+);
+
+CREATE TRIGGER IF NOT EXISTS watched_episodes_updated_at_trigger
+  BEFORE UPDATE ON watched_episodes BEGIN
+    UPDATE watched_episodes SET updated_at = CURRENT_TIMESTAMP;
+  END;
+
+
+CREATE TABLE IF NOT EXISTS watched_movies (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  movie_id INTEGER,
+
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  
+  FOREIGN KEY (user_id) REFERENCES users (id),
+  FOREIGN KEY (movie_id) REFERENCES movies (id)
+);
+
+CREATE TRIGGER IF NOT EXISTS watched_movies_updated_at_trigger
+  BEFORE UPDATE ON watched_movies BEGIN
+    UPDATE watched_movies SET updated_at = CURRENT_TIMESTAMP;
+  END;

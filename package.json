@@ -1,0 +1,17 @@
+{
+  "name": "yellow-tea-panda",
+  "version": "0.0.1",
+  "description": "Movie and Series Database",
+  "main": "index.js",
+  "scripts": {
+      "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas Hertleif, Patrick Felsch, Niklas Friedrich",
+  "license": "ISC",
+  "dependencies": {
+    "co-sqlite3": "^0.1.3",
+    "express": "^4.13.3",
+    "hbs": "^4.0.0"
+  }
+}
