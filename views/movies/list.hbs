@@ -1,19 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{movie.name}}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.0.3/milligram.min.css"/>
-</head>
-<body>
-    <ul>
-        {{#each movies}}
-        <li>
-            <a href="/movie/{{this.id}}">
-                {{this.name}} ({{this.language}})
-            </a>
-        </li>
-        {{/each}}
-    </ul>
-</body>
-</html>
+<h1>Movies</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Language</th>
+            <th>Lenght</th>
+        </tr>    
+    </thead>
+         <tbody>            
+            {{#each movies}}
+                <tr>
+                <td><a href="/movie/{{this.id}}">{{this.name}}</a></td>
+                <td>{{this.language}}</td> 
+                <td>{{this.lenght}}</td>               
+                </tr>
+            {{/each}}    
+      <tbody>  
+</table>

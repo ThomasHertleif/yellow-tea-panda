@@ -1,8 +1,8 @@
 --Movies
 
-CREATE VIEW IF NOT EXISTS movies_with_language
-  (id, name, language) AS
-  SELECT movies.id AS id, movies.name AS name, languages.code AS language
+CREATE VIEW IF NOT EXISTS movies_all
+  (id, name, lenght, language, released) AS
+  SELECT movies.id AS id, movies.name AS name, movies.lenght AS lenght, languages.code AS language, movies.released AS released
     FROM movies
     INNER JOIN languages ON movies.language_id = languages.id;
     

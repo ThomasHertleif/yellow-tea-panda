@@ -18,7 +18,7 @@ app.get('/', function start_page (req, res) {
 // Movies
 
 app.get('/movies', function movies_page(req, res, next) {
-    db.all('SELECT id, name, language FROM movies_with_language')
+    db.all('SELECT id, name, lenght, language FROM movies_all')
     .then(function (movies) {
         res.render('movies/list', {
             movies: movies
@@ -27,10 +27,17 @@ app.get('/movies', function movies_page(req, res, next) {
 });
 
 app.get('/movie/:movie_id', function movie_detail_page(req, res, next) {
-    db.get('SELECT name, language FROM movies_with_language WHERE id = ?', req.params.movie_id)
-    .then(function (movie) {
+    Promise.all([
+        db.get('SELECT name, lenght, language FROM movies_all WHERE id = ?', req.params.movie_id),
+        db.get('SELECT genre_name FROM genres_for_movie WHERE movie_id = ?', req.params.movie_id)
+    ])
+    .then(function (results) {
+        var movie = results[0];
+        var genre = results[1];
+        
         res.render('movies/details', {
-            movie: movie
+            movie: movie,
+            genre: genre
         });
     }).catch(next);
     // .catch(function (err) {
