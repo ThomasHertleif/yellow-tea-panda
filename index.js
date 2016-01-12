@@ -85,3 +85,5 @@ sqlite3('xenosaurus.db')
         console.log('Server started. Yay!');
     });
 });
+
+app.use(express.static('static'));
