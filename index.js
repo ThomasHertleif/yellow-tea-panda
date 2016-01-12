@@ -1,7 +1,7 @@
-var express = require("express");
-var sqlite3 = require("co-sqlite3");
+var express = require('express');
+var sqlite3 = require('co-sqlite3');
 
-var create_db = require("./database/create.js");
+var create_db = require('./database/create.js');
 
 var db; // Access to database
 var app = express(); // HTTP server
@@ -10,19 +10,24 @@ app.set('view engine', 'hbs'); // HTML templating
 // Answer HTTP stuff
 
 app.get('/', function start_page (req, res) {
-    db.all('SELECT id, name, language FROM movies_with_language')
-    .then(function (movies) {
-        res.render('index', {        
-        });
-    });
+    res.render('index');
 });
 
 // Movies
 
-app.get('/movie/movie_detail/:movie_id', function movie_detail_page(req, res, next) {
+app.get('/movies', function movies_page(req, res, next) {
+    db.all('SELECT id, name, language FROM movies_with_language')
+    .then(function (movies) {
+        res.render('movies/list', {
+            movies: movies
+        });
+    }).catch(next);
+});
+
+app.get('/movie/:movie_id', function movie_detail_page(req, res, next) {
     db.get('SELECT name, language FROM movies_with_language WHERE id = ?', req.params.movie_id)
     .then(function (movie) {
-        res.render('movies/movies', {
+        res.render('movies/details', {
             movie: movie
         });
     }).catch(next);
@@ -33,23 +38,32 @@ app.get('/movie/movie_detail/:movie_id', function movie_detail_page(req, res, ne
 
 //Shows
 
-app.get('/shows/shows', function shows_page(req, res, next) {
+app.get('/shows', function shows_page(req, res, next) {
     db.all('SELECT id, name, language, creator, network FROM shows_with_seasons')
     .then(function (shows) {
-        res.render('shows/shows', {
+        res.render('shows/list', {
             shows: shows
         });
-    });
-});
-
-app.get('/shows/series_detail/:series_id', function series_detail_page(req, res, next) {
-    db.get('SELECT id, name, language, creator, network FROM shows_with_seasons WHERE id = ?', req.params.series_id)
-    .then(function (series) {
-        res.render('shows/series_detail', {
-            series: series
-        })
     }).catch(next);
 });
+
+app.get('/show/:show_id', function series_detail_page(req, res, next) {
+    Promise.all([
+        db.all('SELECT name, season, number, released FROM episodes_with_seasons'),
+        db.get('SELECT id, name, language, creator, network FROM shows_with_seasons WHERE id = ?', req.params.show_id )
+    ])
+    .then(function (results) {
+        var episodes = results[0];
+        var series = results[1];
+
+        res.render('shows/details', {
+            episodes: episodes,
+            series: series
+        });
+    }).catch(next);
+});
+
+// app.get('/show/:show_id/:season/:number');
 
 // Open DB, start server.
 
@@ -59,6 +73,6 @@ sqlite3('xenosaurus.db')
     return db.exec(create_db);
 }).then(function start_server() {
     app.listen(4020, function () {
-        console.log("Server started. Yay!");
+        console.log('Server started. Yay!');
     });
 });

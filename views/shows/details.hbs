@@ -7,9 +7,15 @@
 </head>
 </head>
 <body>
-    <dic id="container">
+    <div class="container">
+        <h1>{{series.name}}</h1>
+        <ul>
+            {{#each episodes}}
+            <li>{{this.name}} S{{this.season}}E{{this.number}} {{this.released}}</li>
+            {{/each}}
+        </ul>
         
         
-    </dic>
+    </div>
 </body>
 </html>
