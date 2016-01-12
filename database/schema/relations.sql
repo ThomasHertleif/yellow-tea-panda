@@ -69,3 +69,20 @@ CREATE TRIGGER IF NOT EXISTS series_genres_updated_at_trigger
   BEFORE UPDATE ON series_genres BEGIN
     UPDATE series_genres SET updated_at = CURRENT_TIMESTAMP;
   END;
+  
+CREATE TABLE IF NOT EXISTS series_seasons (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    series_id INTEGER,
+    season_id INTEGER,
+    
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  
+    FOREIGN KEY (series_id) REFERENCES series (id),
+    FOREIGN KEY (season_id) REFERENCES seasons (id)
+);
+
+CREATE TRIGGER IF NOT EXISTS series_seasons_updated_at_trigger
+  BEFORE UPDATE ON series_genres BEGIN
+    UPDATE series_seasons SET updated_at = CURRENT_TIMESTAMP;
+  END;
