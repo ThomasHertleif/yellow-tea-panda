@@ -1,21 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{series.name}}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.0.3/milligram.min.css"/>
-</head>
-</head>
-<body>
-    <div class="container">
-        <h1>{{series.name}}</h1>
-        <ul>
+<h1>{{series.name}}</h1>
+Language: <h5>{{series.language}}</h5>
+Creator: <h5>{{series.creator}}</h5>
+Network: <h5>{{series.network}}</h5>
+<table>
+    <thead>
+        <tr>
+            <th>Episode Name</th>
+            <th>Season</th>
+            <th>Number</th>
+            <th>Released</th>
+        </tr>    
+    </thead>
+        <tbody>            
             {{#each episodes}}
-            <li>{{this.name}} S{{this.season}}E{{this.number}} {{this.released}}</li>
-            {{/each}}
-        </ul>
-        
-        
-    </div>
-</body>
-</html>
+                <tr>
+                <td><a href="/show/{{this.id}}">{{this.name}}</a></td>
+                <td>{{this.season}}</td>
+                <td>{{this.number}}</td>
+                <td>{{this.released}}</td>
+                </tr>
+            {{/each}}    
+      <tbody>  
+</table>

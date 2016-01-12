@@ -10,7 +10,9 @@ app.set('view engine', 'hbs'); // HTML templating
 // Answer HTTP stuff
 
 app.get('/', function start_page (req, res) {
-    res.render('index');
+    res.render('index', {
+        title: 'Start'
+    });
 });
 
 // Movies
