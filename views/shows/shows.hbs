@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Series on Yellow Tea Panda</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.0.3/milligram.min.css"/>
+</head>
+</head>
+<body>
+    <div id="container">
+        <ul>
+        {{#each shows}}
+        <li>
+            <a href="/shows/series_detail/{{this.id}}">
+                {{this.name}} ({{this.language}})
+            </a>
+        </li>
+        {{/each}}
+    </ul>
+    </div>  
+</body>
+</html>

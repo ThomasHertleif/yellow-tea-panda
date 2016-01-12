@@ -12,23 +12,43 @@ app.set('view engine', 'hbs'); // HTML templating
 app.get('/', function start_page (req, res) {
     db.all('SELECT id, name, language FROM movies_with_language')
     .then(function (movies) {
-        // movies = [{name: "Ali G", language: 'en'}]
-        res.render('index', {
-            title: 'Panda', msg: 'Nein das ist Patrick', movies: movies
+        res.render('index', {        
         });
     });
 });
 
-app.get('/movie/:movie_id', function movie_page(req, res, next) {
+// Movies
+
+app.get('/movie/movie_detail/:movie_id', function movie_detail_page(req, res, next) {
     db.get('SELECT name, language FROM movies_with_language WHERE id = ?', req.params.movie_id)
     .then(function (movie) {
-        res.render('movie', {
+        res.render('movies/movies', {
             movie: movie
         });
     }).catch(next);
     // .catch(function (err) {
     //     res.status(404).render('404', {error: err});
     // });
+});
+
+//Shows
+
+app.get('/shows/shows', function shows_page(req, res, next) {
+    db.all('SELECT id, name, language, creator, network FROM shows_with_seasons')
+    .then(function (shows) {
+        res.render('shows/shows', {
+            shows: shows
+        });
+    });
+});
+
+app.get('/shows/series_detail/:series_id', function series_detail_page(req, res, next) {
+    db.get('SELECT id, name, language, creator, network FROM shows_with_seasons WHERE id = ?', req.params.series_id)
+    .then(function (series) {
+        res.render('shows/series_detail', {
+            series: series
+        })
+    }).catch(next);
 });
 
 // Open DB, start server.

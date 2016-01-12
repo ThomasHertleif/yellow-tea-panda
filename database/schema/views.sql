@@ -5,13 +5,13 @@ CREATE VIEW IF NOT EXISTS movies_with_language
     INNER JOIN languages ON movies.language_id = languages.id;
 
 
-CREATE VIEW IF NOT EXISTS series_with_seasons
+CREATE VIEW IF NOT EXISTS shows_with_seasons
     (id, name, language, creator, network) AS
     SELECT series.id AS id, series.name AS name, 
-    language.code AS language, series.creator AS creator, 
+    languages.code AS language, series.creator_id AS creator, 
     series.network AS network
         FROM series
-        INNER JOIN language ON series.language_id = language_id;
+        INNER JOIN languages ON series.language_id = languages.id;
         
 CREATE VIEW IF NOT EXISTS episodes_with_date
     (id, name, released) AS        
