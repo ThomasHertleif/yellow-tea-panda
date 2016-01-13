@@ -1,0 +1,35 @@
+<h1>Add a new movie</h1>
+<form action="/add_movie/validate" method="POST">
+    <label>
+        Title
+        <input type="text" name="name" required/>
+    </label>
+
+    <label>
+        Language
+        <select name="language" required>
+            <option value="">&mdash; Select one &mdash;</option>
+            {{#each languages}}
+            <option value="{{this.id}}">{{this.code}}</option>
+            {{/each}}
+        </select>
+    </label>
+
+    <label>
+        Length
+        <input type="number" name="length" min="1" step="1" required/>
+    </label>
+
+    <label>
+        Genre
+        <select name="genre_select" required>
+            {{#each genres}}
+            <option value="{{this.genre_id}}">{{this.genre_name}}</option>
+            {{/each}}
+        </select>
+    </label>
+
+    <button type="submit">
+        Save
+    </button>
+</form>

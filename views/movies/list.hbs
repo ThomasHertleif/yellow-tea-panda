@@ -6,16 +6,16 @@
             <th>Language</th>
             <th>Lenght</th>
             <th>Genre</th>
-        </tr>    
+        </tr>
     </thead>
-         <tbody>            
+         <tbody>
             {{#each movies}}
                 <tr>
                 <td><a href="/movie/{{this.id}}">{{this.name}}</a></td>
-                <td>{{this.language}}</td> 
-                <td>{{this.lenght}} min</td>
-                <td></td>             
+                <td>{{this.language}}</td>
+                <td>{{this.length}} min</td>
+                <td></td>
                 </tr>
-            {{/each}}    
-      <tbody>  
+            {{/each}}
+      <tbody>
 </table>
