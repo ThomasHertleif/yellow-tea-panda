@@ -144,16 +144,12 @@ app.post('/add_movie/validate', urlencodedParser, function create_movie(req, res
         var new_movie_id = result.lastID;
         var genre_ids = req.body.genres;
 
-        var set_genres = [];
-
-        for (var index = 0; index < genre_ids.length; index++) {
-            set_genres.push(
-                db.run('INSERT INTO movies_genres (movie_id, genre_id) VALUES ($movie_id, $genre_id)', {
-                    $movie_id: new_movie_id,
-                    $genre_id: genre_ids[index]
-                })
-            );
-        }
+        var set_genres = genre_ids.map(function (genre_id) {
+            return db.run('INSERT INTO movies_genres (movie_id, genre_id) VALUES ($movie_id, $genre_id)', {
+                $movie_id: new_movie_id,
+                $genre_id: genre_id
+            });
+        });
 
         return Promise.all(set_genres);
     })
