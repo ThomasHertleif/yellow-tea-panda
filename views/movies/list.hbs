@@ -8,14 +8,32 @@
             <th>Genre</th>
         </tr>
     </thead>
-         <tbody>
-            {{#each movies}}
-                <tr>
-                <td><a href="/movie/{{this.id}}">{{this.name}}</a></td>
-                <td>{{this.language}}</td>
-                <td>{{this.length}} min</td>
-                <td></td>
-                </tr>
-            {{/each}}
-      <tbody>
+    <tbody>
+        {{#each movies}}
+        <tr>
+            <th scope="row">
+                <a href="/movie/{{this.id}}">
+                    {{this.name}}
+                </a>
+            </th>
+            <td>
+                {{this.language}}
+            </td>
+            <td>
+                {{#if this.length}}
+                    {{this.length}} min
+                {{else}}
+                    1-2 hours
+                {{/if}}
+            </td>
+            <td>
+                {{#if this.genres}}
+                    {{this.genres}}
+                {{else}}
+                    Good.
+                {{/if}}
+            </td>
+        </tr>
+        {{/each}}
+    <tbody>
 </table>

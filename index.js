@@ -21,33 +21,21 @@ app.get('/', function start_page (req, res) {
 // Movies
 
 app.get('/movies', function movies_page(req, res, next) {
-    Promise.all([
-        db.all('SELECT id, name, length, language FROM movies_all'),
-        db.all('SELECT movie_id, genre_name FROM genres_for_movie')
-    ])
-    .then(function (results) {
-        var movies = results[0];
-        var genre = results[1];
-
+    db.all('SELECT id, name, length, language, genres FROM movies_with_genres')
+    .then(function (movies) {
         res.render('movies/list', {
-            movies: movies,
-            genre: genre
+            title: 'Movies',
+            movies: movies
         });
     }).catch(next);
 });
 
 app.get('/movie/:movie_id', function movie_detail_page(req, res, next) {
-    Promise.all([
-        db.get('SELECT name, length, language FROM movies_all WHERE id = ?', req.params.movie_id),
-        db.get('SELECT genre_name FROM genres_for_movie WHERE movie_id = ?', req.params.movie_id)
-    ])
-    .then(function (results) {
-        var movie = results[0];
-        var genre = results[1];
-
+    db.get('SELECT id, name, length, language, genres FROM movies_with_genres WHERE id = ?', req.params.movie_id)
+    .then(function (movie) {
         res.render('movies/details', {
-            movie: movie,
-            genre: genre
+            title: movie.name,
+            movie: movie
         });
     }).catch(next);
     // .catch(function (err) {
