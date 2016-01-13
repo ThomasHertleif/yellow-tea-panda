@@ -20,14 +20,15 @@
         <input type="number" name="length" min="1" step="1" required/>
     </label>
 
-    <label>
-        Genre
-        <select name="genre_select" required>
-            {{#each genres}}
-            <option value="{{this.genre_id}}">{{this.genre_name}}</option>
-            {{/each}}
-        </select>
-    </label>
+    <p>Genres</p>
+    <p>
+    {{#each genres}}
+        <label>
+            <input type="checkbox" name="genres" value="{{this.id}}"/>
+            {{this.name}}
+        </label>
+    {{/each}}
+    </p>
 
     <button type="submit">
         Save

@@ -115,7 +115,7 @@ app.get('/edit_tables', function edit_tables(req, res, next) {
 
 app.get('/add_movie', function create_movie_page(req, res, next) {
     Promise.all([
-        db.all('SELECT genre_id, genre_name FROM genres_for_movie'),
+        db.all('SELECT id, name FROM genres'),
         db.all('SELECT id, code FROM get_all_languages')
     ])
     .then(function (results) {
@@ -131,6 +131,7 @@ app.get('/add_movie', function create_movie_page(req, res, next) {
 });
 
 app.post('/add_movie/validate', urlencodedParser, function create_movie(req, res, next) {
+    console.log("i got dis", req.body);
     // TODO: Validate inputs
     // TODO: Read other entries; make sure order is correct.
     var movie = req.body;
@@ -138,6 +139,23 @@ app.post('/add_movie/validate', urlencodedParser, function create_movie(req, res
         $name: movie.name,
         $language: movie.language,
         $length: movie.length
+    })
+    .then(function (result) {
+        var new_movie_id = result.lastID;
+        var genre_ids = req.body.genres;
+
+        var set_genres = [];
+
+        for (var index = 0; index < genre_ids.length; index++) {
+            set_genres.push(
+                db.run('INSERT INTO movies_genres (movie_id, genre_id) VALUES ($movie_id, $genre_id)', {
+                    $movie_id: new_movie_id,
+                    $genre_id: genre_ids[index]
+                })
+            );
+        }
+
+        return Promise.all(set_genres);
     })
     .then(function () {
         res.redirect('/');

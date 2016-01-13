@@ -1,7 +1,7 @@
 --Movies
 
 CREATE VIEW IF NOT EXISTS movies_all
-  (id, name, length, language, released) AS
+  (id, name, length, released, language) AS
   SELECT movies.id AS id, movies.name AS name, movies.length AS length, languages.code AS language, movies.released AS released
     FROM movies
     INNER JOIN languages ON movies.language_id = languages.id;
@@ -12,7 +12,14 @@ CREATE VIEW IF NOT EXISTS genres_for_movie
         FROM movies_genres
         INNER JOIN genres ON movies_genres.genre_id = genres.id;
 
-
+CREATE VIEW IF NOT EXISTS movies_with_genres
+    (id, name, length, released, language, genres) AS
+    SELECT movies.id AS id, movies.name AS name, length, released, languages.code AS language, GROUP_CONCAT(genres.name, ", ")
+        FROM movies
+        INNER JOIN languages ON movies.language_id = languages.id
+        LEFT OUTER JOIN movies_genres ON movies.id = movies_genres.movie_id
+        LEFT OUTER JOIN genres ON movies_genres.genre_id = genres.id
+        GROUP BY movies.id;
 
 --Shows
 
@@ -42,4 +49,4 @@ CREATE VIEW IF NOT EXISTS episodes_with_seasons
 CREATE VIEW IF NOT EXISTS get_all_languages
     (id, code) AS
     SELECT id, code
-    FROM languages
+    FROM languages;
