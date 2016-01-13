@@ -14,7 +14,7 @@ Network: <h5>{{series.network}}</h5>
         <tbody>            
             {{#each episodes}}
                 <tr>
-                <td><a href="/show/{{this.id}}">{{this.name}}</a></td>
+                <td><a href="/show/{{series.id}}/{{this.season}}/{{this.id}}">{{this.name}}</a></td>
                 <td>{{this.season}}</td>
                 <td>{{this.number}}</td>
                 <td>{{this.released}}</td>

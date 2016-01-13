@@ -18,10 +18,17 @@ app.get('/', function start_page (req, res) {
 // Movies
 
 app.get('/movies', function movies_page(req, res, next) {
-    db.all('SELECT id, name, lenght, language FROM movies_all')
-    .then(function (movies) {
+    Promise.all([
+        db.all('SELECT id, name, lenght, language FROM movies_all'),
+        db.all('SELECT movie_id, genre_name FROM genres_for_movie')
+    ])
+    .then(function (results) {
+        var movies = results[0];
+        var genre = results[1];        
+        
         res.render('movies/list', {
-            movies: movies
+            movies: movies,
+            genre: genre
         });
     }).catch(next);
 });
@@ -58,7 +65,7 @@ app.get('/shows', function shows_page(req, res, next) {
 
 app.get('/show/:show_id', function series_detail_page(req, res, next) {
     Promise.all([
-        db.all('SELECT name, season, number, released FROM episodes_with_seasons'),
+        db.all('SELECT id, name, season, number, released FROM episodes_with_seasons'),
         db.get('SELECT id, name, language, creator, network FROM shows_with_seasons WHERE id = ?', req.params.show_id )
     ])
     .then(function (results) {
@@ -72,7 +79,21 @@ app.get('/show/:show_id', function series_detail_page(req, res, next) {
     }).catch(next);
 });
 
-// app.get('/show/:show_id/:season/:number');
+app.get('/show/:show_id/:season/:number', function episode_detail_page(req, res, next) {
+    Promise.all([
+        db.get('SELECT id, name, language, creator, network FROM shows_with_seasons WHERE id = ?', req.params.show_id ),
+        db.all('SELECT id, name, season, number, released FROM episodes_with_seasons')
+    ])
+    .then(function (results) {
+        var series = results[0];
+        var episodes = results[1];
+        
+        res.render('shows/episode', {
+            series: series,
+            episodes: episodes
+        });
+    });
+});
 
 // Open DB, start server.
 
